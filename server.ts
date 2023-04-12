@@ -1,6 +1,7 @@
 import cookieSession from 'cookie-session';
 import express from 'express';
 import { getAllUsers, getAuth, loginUser, registerUser } from './controller';
+import { auth } from './middlewares';
 
 //Server application
 const app = express();
@@ -27,7 +28,7 @@ app.get("/", (req, res) =>{
 app.get("/users", getAllUsers)
 app.post("/users/register", registerUser)
 app.post("/users/login", loginUser) 
-app.get("/users/auth", getAuth);
+app.get("/users/auth", auth, getAuth);
 
 //Startar servern
 app.listen(3000, () => 
