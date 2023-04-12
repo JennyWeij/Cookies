@@ -1,3 +1,4 @@
+import argon2 from 'argon2';
 import cookieSession from 'cookie-session';
 import express from 'express';
 
@@ -34,9 +35,10 @@ app.get("/users", (req, res) => {
   res.status(200).json(users);
 })
 
-app.post("/users/register", (req, res) => {
+app.post("/users/register", async (req, res) => {
   const { email, password } = req.body;
-  const user = { email, password };
+  const hashedPassword = await argon2.hash(password)
+  const user = { email, password: hashedPassword };
   users.push(user);
   res.status(201).json(user);
 });
