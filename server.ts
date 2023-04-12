@@ -10,7 +10,10 @@ interface User {
   email: string;
   password: string;
 }
-const users: User[] = [];
+const users: User[] = [{
+  email: "jenny@test.com",
+  password: "$argon2id$v=19$m=65536,t=3,p=4$jpvhETqjNrXOsmtQxUv37g$1JKP9KVHUh0pusKnwmzHnGwZxPSeQl1/0P7f7ctLWic"
+}];
 
 //Global middleware
 //1. json
