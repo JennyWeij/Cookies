@@ -1,19 +1,9 @@
-import argon2 from 'argon2';
 import cookieSession from 'cookie-session';
 import express from 'express';
+import { getAllUsers, getAuth, loginUser, registerUser } from './controller';
 
 //Server application
 const app = express();
-
-//"Databas"
-interface User {
-  email: string;
-  password: string;
-}
-const users: User[] = [{
-  email: "jenny@test.com",
-  password: "$argon2id$v=19$m=65536,t=3,p=4$jpvhETqjNrXOsmtQxUv37g$1JKP9KVHUh0pusKnwmzHnGwZxPSeQl1/0P7f7ctLWic"
-}];
 
 //Global middleware
 //1. json
@@ -34,46 +24,10 @@ app.get("/", (req, res) =>{
 })
 
 //Bara för demo, gör inte i verkligheten
-app.get("/users", (req, res) => {
-  res.status(200).json(users);
-})
-
-app.post("/users/register", async (req, res) => {
-  const { email, password } = req.body;
-  const hashedPassword = await argon2.hash(password)
-  const user = { email, password: hashedPassword };
-  users.push(user);
-  res.status(201).json(user);
-});
-
-app.post("/users/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  //Kolla användare
-  const user = users.find(u => u.email === email);
-  if (!user) {
-    return res.status(400).json("Incorrect email or password")
-  }
-  
-  //Kolla password
-  const isAuth = await argon2.verify(user.password, password)
-  if (!isAuth) {
-    return res.status(400).json("Incorrect email or password")
-  }
-
-  //Skapa session/cookie
-  req.session!.email = user.email;
-
-  //Skicka svar(response)
-  res.status(200).json("Login successful!");
-})
-
-  app.get("/users/auth", (req, res) => {
-    if (!req.session?.email) {
-      return res.status(401).json("You must login")
-    }
-    res.status(200).json(req.session)
-  })
+app.get("/users", getAllUsers)
+app.post("/users/register", registerUser)
+app.post("/users/login", loginUser) 
+app.get("/users/auth", getAuth);
 
 //Startar servern
 app.listen(3000, () => 
