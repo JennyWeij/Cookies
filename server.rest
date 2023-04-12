@@ -22,3 +22,6 @@ Content-Type: application/json
   "email": "jenny@test.com",
   "password": "12345"
 }
+
+### GET Secret Info
+GET http://localhost:3000/users/auth

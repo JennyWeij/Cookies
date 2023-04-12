@@ -68,6 +68,15 @@ app.post("/users/login", async (req, res) => {
   res.status(200).json("Login successful!");
 })
 
+  app.get("/users/auth", (req, res) => {
+    if (!req.session?.email) {
+      return res.status(401).json("You must login")
+    }
+    res.status(200).json(req.session)
+  })
+
 //Startar servern
 app.listen(3000, () => 
 console.log("Server is running on http://localhost:3000"))
+
+
