@@ -1,0 +1,15 @@
+### HOME
+
+GET http://localhost:3000/
+
+### GET all Users
+GET http://localhost:3000/users
+
+### POST Register User
+POST http://localhost:3000/users/register
+Content-Type: application/json
+
+{
+  "email": "jenny@test.com",
+  "password": "12345"
+}
